@@ -1,38 +1,43 @@
-import { Card } from "react-bootstrap"
+import { Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import Rating from "@/components/Rating";
 
-type Props = {
-    _id: string,
-    name: string,
-    image: string,
-    description: string,
-    brand: string,
-    category: string,
-    price: number,
-    countInStock: number,
-    rating: number,
-    numReviews: number
-}
-const ProductCard = ( product : Props) => {
+type ProductCardProps = {
+  _id: string;
+  name: string;
+  image: string;
+  description: string;
+  brand: string;
+  category: string;
+  price: number;
+  countInStock: number;
+  rating: number;
+  numReviews: number;
+};
+const ProductCard = (product: ProductCardProps) => {
   return (
     <Card className="my-3 p-3 rounded">
-        <a href={`/product/${product._id}`}>
-            <figure>
-                <Card.Img src={product.image} variant="top"/>
-            </figure>
-        </a>
-        <Card.Body>
-            <a href={`/product/${product._id}`}>
-                <Card.Title as="div">
-                    <strong>{product.name}</strong>
-                </Card.Title>
-            </a>
+      <Card.Link as={Link} to={`/product/${product._id}`}>
+        <figure>
+          <Card.Img src={product.image} variant="top" />
+        </figure>
+      </Card.Link>
+      <Card.Body>
+        <Card.Link as={Link} to={`/product/${product._id}`}>
+          <Card.Title as="div" className="text-truncate">
+            <strong>{product.name}</strong>
+          </Card.Title>
+        </Card.Link>
 
-            <Card.Text as="h3">
-                <span className="text-primary">${product.price}</span>
-            </Card.Text>
-        </Card.Body>
+        <Card.Text as="h3">
+          <span className="text-primary">${product.price}</span>
+        </Card.Text>
+      </Card.Body>
+      <Card.Footer>
+        <Rating numReviews={product.numReviews} rating={product.rating}/>
+      </Card.Footer>
     </Card>
-  )
-}
+  );
+};
 
-export default ProductCard
+export default ProductCard;
