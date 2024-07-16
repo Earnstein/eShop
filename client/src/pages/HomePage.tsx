@@ -1,15 +1,17 @@
 import React from "react";
-import products from "@/constants/products";
 import { Row, Col } from "react-bootstrap";
-import ProductCard from "@/components/ProductCard";
+import ProductCard, { ProductProp } from "@/components/ProductCard";
+import { useGetProducts } from '../apis/api-hooks';
 
 const HomePage = () => {
+  const { data:products, isLoading } = useGetProducts();
   return (
     <React.Fragment>
       <h1 className="text-center py-3">Latest Product</h1>
       <Row>
-        {products.map((product) => (
-          <Col sm={12} md={6} lg={4} xl={3}>
+        {isLoading && <span>Loading</span>}
+        {!isLoading && products.map((product: ProductProp) => (
+          <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
             <ProductCard {...product} />
           </Col>
         ))}
