@@ -2,7 +2,7 @@ import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Rating from "@/components/Rating";
 
-type ProductCardProps = {
+export type ProductProp = {
   _id: string;
   name: string;
   image: string;
@@ -14,7 +14,7 @@ type ProductCardProps = {
   rating: number;
   numReviews: number;
 };
-const ProductCard = (product: ProductCardProps) => {
+const ProductCard = (product: ProductProp) => {
   return (
     <Card className="my-3 p-3 rounded">
       <Card.Link as={Link} to={`/product/${product._id}`}>
