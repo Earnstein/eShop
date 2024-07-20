@@ -1,12 +1,30 @@
 import type { Request, Response } from "express";
-import products from "../constants/products";
+import Product from "../models/productModel";
+import { StatusCodes } from "http-status-codes";
 
-export function getProducts(req: Request, res: Response) {
-    res.status(200).json(products);
+export async function getProducts(req: Request, res: Response) {
+  const products = await Product.find(
+    {},
+    {
+      __v: 0,
+      updatedAt: 0,
+      createdAt: 0,
+    }
+  );
+  return res.status(StatusCodes.OK).json(products);
 }
 
-export function getProduct(req: Request, res: Response) {
-    const { id } = req.params;
-    const product = products.find(product => product._id === id);
-    res.status(200).json(product);
+export async function getProduct(req: Request, res: Response) {
+  const { id } = req.params;
+  const product = await Product.findById(
+    {
+      _id: id,
+    },
+    {
+      __v: 0,
+      updatedAt: 0,
+      createdAt: 0,
+    }
+  );
+  return res.status(StatusCodes.OK).json(product);
 }
