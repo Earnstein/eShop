@@ -1,34 +1,39 @@
+import { useGetProduct } from "@/apis/api-hooks";
 import Rating from "@/components/Rating";
-import products from "@/constants/products";
 import React from "react";
 import { Button, Card, Col, Image, ListGroup, Row } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 
+
+
 const ProductPage = () => {
   const { id } = useParams();
-  const product = products.find((p) => p._id === id);
+  const { data, isPending } = useGetProduct(id!);
   return (
     <React.Fragment>
       <Link to="/">
-        <Button  className="btn-block my-3" type="button">Go Back</Button>
+        <Button className="btn-block my-3" type="button">
+          Go Back
+        </Button>
       </Link>
-      <Row>
-        <Col md={5}>
+        {isPending && <span>loading</span>}
+        {data && (
+         <Row>
+           <Col md={5}>
           <figure>
-            <Image src={product?.image} alt={product?.name} fluid />
+            <Image src={`/${data?.image}`} alt={data?.name} fluid />
           </figure>
         </Col>
-
         <Col md={4}>
           <ListGroup variant="flush">
             <ListGroup.Item>
-              <h3>{product?.name}</h3>
+              <h3>{data?.name}</h3>
             </ListGroup.Item>
             <ListGroup.Item>
-              {product && (
+              {data && (
                 <Rating
-                  rating={product?.rating}
-                  numReviews={product?.numReviews}
+                  rating={data?.rating}
+                  numReviews={data?.numReviews}
                 />
               )}
             </ListGroup.Item>
@@ -41,7 +46,7 @@ const ProductPage = () => {
                 <Row>
                   <Col>Price:</Col>
                   <Col>
-                    <strong>${product?.price}</strong>
+                    <strong>${data?.price}</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -51,7 +56,7 @@ const ProductPage = () => {
                   <Col>Status:</Col>
                   <Col>
                     <strong>
-                      {product && product?.countInStock > 0
+                      {data && data?.countInStock > 0
                         ? "In Stock"
                         : "Out of Stock"}
                     </strong>
@@ -63,7 +68,7 @@ const ProductPage = () => {
                 <Button
                   className="btn-block"
                   type="button"
-                  disabled={product && product?.countInStock === 0}
+                  disabled={data && data?.countInStock === 0}
                 >
                   Add To Cart
                 </Button>
@@ -71,7 +76,8 @@ const ProductPage = () => {
             </ListGroup>
           </Card>
         </Col>
-      </Row>
+         </Row>
+        )}
     </React.Fragment>
   );
 };
