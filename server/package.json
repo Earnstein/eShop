@@ -5,6 +5,7 @@
   "devDependencies": {
     "@types/bun": "latest",
     "colorts": "^0.1.63",
+    "express-async-handler": "^1.2.0",
     "morgan": "^1.10.0"
   },
   "scripts": {
