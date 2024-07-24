@@ -1,23 +1,22 @@
 import mongoose from "mongoose";
-import 'colorts/lib/string'
+import "colorts/lib/string";
 
 const MONGO_URI = Bun.env.MONGO_URI!;
 
-
-mongoose.connection.on('error', (err) => {
-    console.error(`ERROR: ${err}`.red.inverse);
+mongoose.connection.on("error", (err) => {
+  console.error(`ERROR: ${err}`.red.inverse);
 });
 
 export async function mongoConnect() {
-   try {
+  try {
     await mongoose.connect(MONGO_URI);
-    console.log('MongoDB connected'.blue.underline);
-   } catch (error) {
+    console.log("MongoDB connected".blue.underline);
+  } catch (error) {
     console.error(`MongoDB connection error: ${error}`.red.inverse);
-   }
+  }
 }
 
 export async function mongoDisconnect() {
-    await mongoose.connection.close();
-    console.log('MongoDB disconnected'.red.underline);
+  await mongoose.connection.close();
+  console.log("MongoDB disconnected".red.underline);
 }
