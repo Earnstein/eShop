@@ -3,6 +3,7 @@ import Rating from "@/components/Rating";
 import React from "react";
 import { Button, Card, Col, Image, ListGroup, Row } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
+import Loader from '@/components/Loader';
 
 
 
@@ -16,7 +17,7 @@ const ProductPage = () => {
           Go Back
         </Button>
       </Link>
-        {isPending && <span>loading</span>}
+      {isPending && <Loader/>}
         {data && (
          <Row>
            <Col md={5}>
