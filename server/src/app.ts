@@ -22,8 +22,10 @@ app.use(
     credentials: true,
   }),
 );
-app.use(limit);
 app.use(cookieParser("secret"));
+if (Bun.env.NODE_ENV === "production") {
+  app.use(limit);
+}
 if (Bun.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
