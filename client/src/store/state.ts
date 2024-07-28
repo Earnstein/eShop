@@ -1,5 +1,6 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage, devtools } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist, createJSONStorage, devtools } from "zustand/middleware";
+import { immer } from "zustand/middleware/immer";
 
 export interface CartItem {
   _id: string;
@@ -35,8 +36,9 @@ type Actions = {
 const initialState = {
   cartItems: [] as CartItem[],
   shippingAddress: {} as ShippingAddress,
-  paymentMethod: 'PayPal',
-  totalPrice: 0 as number
+  paymentMethod: "PayPal",
+  tax: 0 as number,
+  totalPrice: 0 as number,
 };
 
 const addDecimals = (num: number) => {
@@ -46,37 +48,55 @@ const addDecimals = (num: number) => {
 const useCartStore = create<CartState & Actions>()(
   devtools(
     persist(
-      (set) => ({
+      immer((set) => ({
         ...initialState,
         addToCart: (newItem) =>
           set((state) => {
-            const existingItem = state.cartItems.find((item) => item._id === newItem._id);
-            const updatedCartItems = existingItem
-              ? state.cartItems.map((item) => (item._id === existingItem._id ? newItem : item))
-              : [...state.cartItems, newItem];
-
-            return {
-              ...state,
-              cartItems: updatedCartItems,
-              totalPrice: addDecimals(updatedCartItems.reduce((total, item) => total + item.price * item.qty, 0))
-            };
+            const existingItem = state.cartItems.find(
+              (item) => item._id === newItem._id
+            );
+            if (existingItem) {
+              state.cartItems = state.cartItems.map((item) =>
+                item._id === existingItem._id ? newItem : item
+              );
+            } else {
+              state.cartItems.push(newItem);
+            }
+            state.totalPrice = addDecimals(
+              state.cartItems.reduce(
+                (total, item) => total + item.price * item.qty,
+                0
+              )
+            );
+            console.log(state.totalPrice);
           }),
         removeFromCart: (id) =>
           set((state) => {
-            const updatedCartItems = state.cartItems.filter((x) => x._id !== id);
-            return { ...state, cartItems: updatedCartItems };
+            state.cartItems = state.cartItems.filter((x) => x._id !== id);
           }),
         saveShippingAddress: (address) =>
-          set((state) => ({ ...state, shippingAddress: address })),
+          set((state) => {
+            state.shippingAddress = address;
+          }),
         savePaymentMethod: (method) =>
-          set((state) => ({ ...state, paymentMethod: method })),
+          set((state) => {
+            state.paymentMethod = method;
+          }),
         clearCartItems: () =>
-          set((state) => ({ ...state, cartItems: [] })),
+          set((state) => {
+            state.cartItems = [];
+          }),
         resetCart: () => set(() => initialState),
-      }),
+      })),
       {
-        name: 'cart',
+        name: "cart",
         storage: createJSONStorage(() => localStorage),
+        partialize: (state) =>
+          Object.fromEntries(
+            Object.entries(state).filter(
+              ([key]) => key === "cartItems"
+            )
+          ),
       }
     )
   )
