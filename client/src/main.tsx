@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import "@/assets/custom/bootstrap.custom.css";
-import { HomePage, ProductPage } from "@/pages/index.ts"
+import { HomePage, ProductPage, CartPage } from "@/pages/index.ts"
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -15,6 +15,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { Toaster } from "sonner";
 
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />}>
       <Route path="/" element={<HomePage />} index={true} />
       <Route path="/product/:id" element={<ProductPage />} />
+      <Route path="/cart" element={<CartPage/>}/>
     </Route>
   )
 )
@@ -32,6 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
+      <Toaster position='top-right' offset={70} duration={2000} richColors/>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </React.StrictMode>,
