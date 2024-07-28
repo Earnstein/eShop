@@ -4,12 +4,25 @@ import React from "react";
 import { Button, Card, Col, Image, ListGroup, Row } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Loader from '@/components/Loader';
+import useCartStore, { CartItem } from '@/store/state';
 
 
 
 const ProductPage = () => {
   const { id } = useParams();
-  const { data, isPending } = useGetProduct(id!);
+  const { data, isPending, isError, error } = useGetProduct(id!);
+  const { addToCart } = useCartStore();
+  const handleCart = () => {
+    const newProduct: CartItem = {
+      _id: data?._id,
+      name: data?.name,
+      qty: data?.countInStock || 2,
+      price: 100,
+      image: data?.image,
+    }
+    addToCart(newProduct);
+  }
+
   return (
     <React.Fragment>
       <Link to="/">
@@ -18,6 +31,7 @@ const ProductPage = () => {
         </Button>
       </Link>
       {isPending && <Loader/>}
+      {isError && error?.message && <p>{error?.message} {error?.response?.status}</p>}
         {data && (
          <Row>
            <Col md={5}>
@@ -70,6 +84,7 @@ const ProductPage = () => {
                   className="btn-block"
                   type="button"
                   disabled={data && data?.countInStock === 0}
+                  onClick={handleCart}
                 >
                   Add To Cart
                 </Button>
