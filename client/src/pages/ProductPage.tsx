@@ -1,26 +1,30 @@
 import { useGetProduct } from "@/apis/api-hooks";
 import Rating from "@/components/Rating";
 import React from "react";
-import { Button, Card, Col, Image, ListGroup, Row } from "react-bootstrap";
+import { Button, Card, Col, Image, ListGroup, Row, Form } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Loader from '@/components/Loader';
 import useCartStore, { CartItem } from '@/store/state';
+import { toast } from "sonner";
 
 
 
 const ProductPage = () => {
+  const [ qty , setQty ] = React.useState(1);
   const { id } = useParams();
-  const { data, isPending, isError, error } = useGetProduct(id!);
   const { addToCart } = useCartStore();
+  const { data, isPending, isError, error } = useGetProduct(id!);
   const handleCart = () => {
     const newProduct: CartItem = {
-      _id: data?._id,
-      name: data?.name,
-      qty: data?.countInStock || 2,
-      price: 100,
-      image: data?.image,
+      _id: data._id,
+      name: data.name,
+      qty: qty,
+      price: data.price,
+      image: data.image,
+      countInStock: data.countInStock,
     }
     addToCart(newProduct);
+    toast.success("Item added to cart")
   }
 
   return (
@@ -52,6 +56,7 @@ const ProductPage = () => {
                 />
               )}
             </ListGroup.Item>
+            <ListGroup.Item><span className="fw-bold">Description:</span> {data?.description}</ListGroup.Item>
           </ListGroup>
         </Col>
         <Col md={3}>
@@ -78,7 +83,26 @@ const ProductPage = () => {
                   </Col>
                 </Row>
               </ListGroup.Item>
-
+                {data && data?.countInStock > 0 && (
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Qty</Col>
+                      <Col>
+                        <Form.Select
+                          size="sm"
+                          value={qty}
+                          onChange={(e) => setQty(Number(e.target.value))}
+                        >
+                          {[...Array(data?.countInStock).keys()].map((x) => (
+                            <option key={x + 1} value={x + 1}>
+                              {x + 1}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                )}
               <ListGroup.Item>
                 <Button
                   className="btn-block"
