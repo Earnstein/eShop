@@ -1,8 +1,10 @@
-import { Nav, Navbar, Container } from "react-bootstrap";
+import { Nav, Navbar, Container, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
+import useCartStore from "@/store/state";
 
 const Header = () => {
+  const { cartItems } = useCartStore();
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="md" collapseOnSelect>
@@ -14,10 +16,15 @@ const Header = () => {
               <Nav.Link as={Link} to="/" className="nav-link">
                 Home
               </Nav.Link>
-              <Nav.Link as={Link} to="/" className="nav-link">
-                <FaShoppingCart /> Cart
+              <Nav.Link as={Link} to="/cart" className="nav-link">
+                <FaShoppingCart /> Cart{" "}
+                {cartItems.length > 0 && (
+                  <Badge pill bg="success">
+                    {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+                  </Badge>
+                )}
               </Nav.Link>
-              <Nav.Link as={Link} to="/"  className="nav-link">
+              <Nav.Link as={Link} to="/" className="nav-link">
                 <FaUser /> Sign In
               </Nav.Link>
             </Nav>
@@ -25,7 +32,7 @@ const Header = () => {
         </Container>
       </Navbar>
     </header>
-  )
-}
+  );
+};
 
 export default Header;
