@@ -1,6 +1,15 @@
 import {getProduct, getProducts } from "@/apis/api"
+import { STALETIME } from "@/constants";
 import products from "@/constants/products";
 import {  useQuery } from "@tanstack/react-query";
+import '@tanstack/react-query'
+import { AxiosError } from "axios";
+
+declare module '@tanstack/react-query' {
+  interface Register {
+    defaultError: AxiosError
+  }
+}
 
 
 export const useGetProducts = () => {
@@ -8,12 +17,14 @@ export const useGetProducts = () => {
         queryKey: ["products"],
         queryFn: getProducts,
         placeholderData: products,
+        staleTime: STALETIME,
     })
 }
 
 export const useGetProduct = (id: string) => {
     return useQuery ({
         queryKey: ["product", id],
-        queryFn: () => getProduct(id)
+        queryFn: () => getProduct(id),
+        staleTime: STALETIME,
     })
 }
