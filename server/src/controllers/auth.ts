@@ -4,6 +4,7 @@ import { NotFound } from "../utils/errors";
 import asyncHandler from "express-async-handler";
 import User, { type I_UserDocument } from "../models/userModel";
 import * as userService from "../services/userService";
+import { SUCCESS } from "../constants";
 
 
 /**
@@ -38,8 +39,9 @@ export const signInHandler = asyncHandler(
       maxAge: 7 * 24 * 60 * 60 * 1000
     })
     res.status(StatusCodes.OK).json({
-        message: "success",
-        data: user,
+        message: "User logged in",
+        status: SUCCESS,
+        data: ""
     });
     return;
   },
