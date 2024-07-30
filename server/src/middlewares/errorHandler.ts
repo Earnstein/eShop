@@ -8,6 +8,7 @@ import {
   UnAuthenticated,
   NoContent,
 } from "../utils/errors";
+import { FAILED } from "../constants";
 
 export const errorHandlerMiddleware = (
   err: Error,
@@ -25,14 +26,22 @@ export const errorHandlerMiddleware = (
     err instanceof Forbidden ||
     err instanceof UnAuthenticated ||
     err instanceof NoContent ||
-    err instanceof UnAuthenticated
+    err instanceof UnAuthenticated ||
+    err instanceof UnAuthorized
   ) {
     res.status(err.statusCode).json({
       message: err.message,
-      status: err.name,
+      status: FAILED,
+      data: "",
     });
     return;
   }
+
+  res.status(400).json({
+    message: err.message,
+    status: FAILED,
+    data: "",
+  });
 
   next(err);
 };
