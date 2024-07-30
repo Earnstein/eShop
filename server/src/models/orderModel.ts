@@ -1,8 +1,8 @@
 import { Schema, model, Document, type ObjectId, type Date } from "mongoose";
 
-interface Order extends Document {
+export interface I_OrderDocument extends Document {
   user: ObjectId;
-  orderItems: [Cart];
+  orderItems: [I_CartDocument];
   shippingAddress: {
     address: string;
     city: string;
@@ -26,7 +26,7 @@ interface Order extends Document {
   deliveredAt: Date;
 }
 
-interface Cart {
+interface I_CartDocument {
   name: string;
   quantity: Number;
   image: string;
@@ -34,7 +34,7 @@ interface Cart {
   product: ObjectId;
 }
 
-const CartSchema = new Schema<Cart>({
+const CartSchema = new Schema<I_CartDocument>({
   name: {
     type: String,
     required: true,
@@ -58,7 +58,7 @@ const CartSchema = new Schema<Cart>({
   },
 });
 
-const OrderSchema = new Schema<Order>(
+const OrderSchema = new Schema<I_OrderDocument>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -94,5 +94,5 @@ const OrderSchema = new Schema<Order>(
 );
 
 
-const Order = model<Order>("Order", OrderSchema);
+const Order = model<I_OrderDocument>("Order", OrderSchema);
 export default Order;

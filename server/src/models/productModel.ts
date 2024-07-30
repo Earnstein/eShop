@@ -1,6 +1,6 @@
 import { Schema, model, Document, type ObjectId } from "mongoose";
 
-interface Product extends Document {
+export interface I_ProductDocument extends Document {
   user: ObjectId;
   name: string;
   image: string;
@@ -10,17 +10,17 @@ interface Product extends Document {
   price: number;
   countInStock: number;
   rating: number;
-  reviews: [Review];
+  reviews: [I_ReviewDocument];
 }
 
-interface Review {
+interface I_ReviewDocument {
   user: ObjectId;
   name: string;
   rating: number;
   comment: string;
 }
 
-const ReviewSchema = new Schema<Review>(
+const ReviewSchema = new Schema<I_ReviewDocument>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -45,7 +45,7 @@ const ReviewSchema = new Schema<Review>(
   }
 );
 
-const ProductSchema = new Schema<Product>(
+const ProductSchema = new Schema<I_ProductDocument>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -94,5 +94,5 @@ const ProductSchema = new Schema<Product>(
   }
 );
 
-const Product = model<Product>("Product", ProductSchema);
+const Product = model<I_ProductDocument>("Product", ProductSchema);
 export default Product;

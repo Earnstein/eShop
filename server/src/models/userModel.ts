@@ -1,13 +1,13 @@
 import { Schema, model, Document } from "mongoose";
 
-interface User extends Document {
+export interface I_UserDocument extends Document {
   name: string;
   email: string;
   password: string;
   isAdmin: boolean;
 }
 
-const UserSchema = new Schema<User>(
+const UserSchema = new Schema<I_UserDocument>(
   {
     name: {
       type: String,
@@ -33,6 +33,21 @@ const UserSchema = new Schema<User>(
   }
 );
 
+UserSchema.pre("save", async function (next) {
+  try {
+    if (this.isModified("password")){
+      const hashedPassword = await Bun.password.hash(this.password, {
+        algorithm: "bcrypt",
+        cost: 10
+      });
+      this.password = hashedPassword;
+    }
+    next();
+  } catch (error: any) {
+    next(error)
+  }
+})
 
-const User = model<User>("User", UserSchema);
+
+const User = model<I_UserDocument>("User", UserSchema);
 export default User;
