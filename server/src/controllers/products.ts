@@ -4,6 +4,11 @@ import { StatusCodes } from "http-status-codes";
 import { NotFound } from "../utils/errors";
 import asyncHandler from "express-async-handler";
 
+/**
+ * @desc Fetch all products
+ * @route GET /api/products
+ * @access Public
+ */
 export const getProducts = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const products = await Product.find(
@@ -27,6 +32,13 @@ export const getProducts = asyncHandler(
   },
 );
 
+
+
+/**
+ * @desc Fetch a product
+ * @route GET /api/product/:id
+ * @access Public
+ */
 export const getProduct = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
