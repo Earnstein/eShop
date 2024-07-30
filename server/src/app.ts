@@ -6,6 +6,7 @@ import helmet from "helmet";
 import { errorHandlerMiddleware } from "./middlewares/errorHandler";
 import { rateLimit } from "express-rate-limit";
 import cookieParser from "cookie-parser";
+import { StatusCodes } from "http-status-codes";
 
 const limit = rateLimit({
   windowMs: 0.4 * 60 * 1000,
@@ -15,14 +16,15 @@ const limit = rateLimit({
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
+app.use(cookieParser("secret"));
 app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
   }),
 );
-app.use(cookieParser("secret"));
 if (Bun.env.NODE_ENV === "production") {
   app.use(limit);
 }
@@ -30,6 +32,9 @@ if (Bun.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 app.use("/api/v1", appRouter);
+app.use("*", (req, res) => {
+  res.status(StatusCodes.NOT_FOUND).json({ message: "Not found" });
+});
 
 app.use(errorHandlerMiddleware);
 
