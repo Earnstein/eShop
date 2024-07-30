@@ -38,3 +38,13 @@ export const validateId = (req: Request, res: Response, next: NextFunction) => {
 export const paramValidator = [
   param("id").isMongoId().withMessage("Invalid ID"),
 ];
+
+export const loginValidator = [
+  body("email").isEmail().withMessage("Email is required"),
+  body("password").trim().isLength({ min: 6 }).notEmpty().withMessage("Password is required"),
+]
+
+export const registerValidator = [
+  body("name").trim().notEmpty().withMessage("Name is required"),
+  ...loginValidator
+]
