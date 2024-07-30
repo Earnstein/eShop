@@ -7,6 +7,7 @@ import {
   validationResult,
   type ValidationChain,
 } from "express-validator";
+import { FAILED } from "../constants";
 
 export const validate = (validations: ValidationChain[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -21,7 +22,7 @@ export const validate = (validations: ValidationChain[]) => {
     if (!errors.isEmpty()) {
       return res
         .status(StatusCodes.UNPROCESSABLE_ENTITY)
-        .json({ errors: errors.array() });
+        .json({ message: errors.array(), status: FAILED, data: "" });
     }
     return next();
   };
@@ -41,10 +42,14 @@ export const paramValidator = [
 
 export const loginValidator = [
   body("email").isEmail().withMessage("Email is required"),
-  body("password").trim().isLength({ min: 6 }).notEmpty().withMessage("Password is required"),
-]
+  body("password")
+    .trim()
+    .isLength({ min: 6 })
+    .notEmpty()
+    .withMessage("Password is required"),
+];
 
 export const registerValidator = [
   body("name").trim().notEmpty().withMessage("Name is required"),
-  ...loginValidator
-]
+  ...loginValidator,
+];
