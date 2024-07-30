@@ -9,8 +9,7 @@ interface I_SignIn {
 
 export const createToken = (user: I_UserDocument) => {
   const payload = {
-    _id: user._id,
-    role: user.isAdmin ? "admin" : "user",
+    _id: user._id as string
   };
   const token = jwt.sign(payload, Bun.env.JWT_SECRET!, {
     expiresIn: "7d",
