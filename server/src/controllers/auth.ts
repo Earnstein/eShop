@@ -1,9 +1,8 @@
 import type { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { NotFound } from "../utils/errors";
 import asyncHandler from "express-async-handler";
-import User, { type I_UserDocument } from "../models/userModel";
-import * as userService from "../services/userService";
+import { type I_UserDocument } from "../models/userModel";
+import * as userService from "../services/authService";
 import { SUCCESS } from "../constants";
 
 
