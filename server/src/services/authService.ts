@@ -28,8 +28,3 @@ export const signInHandler = async ({ email, password }: I_SignIn) => {
   }
   return user;
 };
-
-
-export const getUsersHandler = async () => {
-    return await User.find({})
-}
