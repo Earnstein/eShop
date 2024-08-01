@@ -1,11 +1,11 @@
 import express from "express";
 import { getProducts, getProduct } from "../controllers/products";
-import { paramValidator, validateId } from "../middlewares/validators";
+import { validateId } from "../middlewares/validators";
 import { protectedRouteMiddleware, validateAdmin } from '../middlewares/authMiddleware';
 
 const productRouter = express.Router();
 
 productRouter.get("/", protectedRouteMiddleware, validateAdmin, getProducts);
-productRouter.get("/:id", paramValidator, validateId, protectedRouteMiddleware, validateAdmin, getProduct);
+productRouter.get("/:id", validateId, protectedRouteMiddleware, validateAdmin, getProduct);
 
 export default productRouter;
