@@ -1,8 +1,9 @@
 import asyncHandler from "express-async-handler";
 import type { Response, Request, NextFunction } from "express";
-import { UnAuthorized, Forbidden} from "../utils/errors";
+import { UnAuthorized, Forbidden } from "../utils/errors";
 import User, { type I_UserDocument } from "../models/userModel";
 import jwt from "jsonwebtoken";
+import * as mongoose from 'mongoose';
 
 interface CustomRequest extends Request {
   user?: I_UserDocument;
@@ -12,7 +13,8 @@ interface I_Payload {
   _id: string;
 }
 
-export const protectedRouteMiddleware = asyncHandler(async (
+export const protectedRouteMiddleware = asyncHandler(
+  async (
     req: CustomRequest,
     res: Response,
     next: NextFunction
@@ -41,14 +43,32 @@ export const protectedRouteMiddleware = asyncHandler(async (
   }
 );
 
+export const validateAdmin = (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.user) {
+    throw new UnAuthorized("user not authenticated");
+  }
 
-export const validateAdmin = (req: CustomRequest, res: Response,next: NextFunction) => {
-    if (!req.user) {
-      throw new UnAuthorized("user not authenticated");
-    }
+  if (!req.user.isAdmin) {
+    throw new Forbidden("permission denied");
+  }
+  next();
+};
 
-    if (!req.user.isAdmin){
-      throw new Forbidden("permission denied");
-    }
-    next()
-}
+export const validateUser = (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+  const userId = req.user?._id as mongoose.ObjectId;
+  const isUser = new mongoose.Types.ObjectId(id).equals(userId.toString());
+  const isAdmin = req.user?.isAdmin;
+  if (!isAdmin && !isUser) {
+    throw new Forbidden("permission denied");
+  }
+  next();
+};
