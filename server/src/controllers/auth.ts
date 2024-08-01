@@ -7,7 +7,7 @@ import { SUCCESS } from "../constants";
 
 
 /**
- * @desc    Auth user & get token
+ * @desc    Auth user & sign up
  * @route   POST /api/auth/signup
  * @access  Public
  */
@@ -24,7 +24,7 @@ export const signUpHandler = asyncHandler(
 );
 
 /**
- * @desc    Auth user & get token
+ * @desc    Auth user & sign in
  * @route   POST /api/auth/signin
  * @access  Public
  */
@@ -42,10 +42,27 @@ export const signInHandler = asyncHandler(
       maxAge: 7 * 24 * 60 * 60 * 1000
     })
     res.status(StatusCodes.OK).json({
-        message: "User logged in",
+        message: "user logged in",
         status: SUCCESS,
         data: ""
     });
     return;
   },
 );
+
+
+/**
+ * @desc    Auth user & sign out
+ * @route   POST /api/auth/signout
+ * @access  Public
+ */
+export const signOutHandler = asyncHandler(
+  async (req:Request, res:Response): Promise<void> => {
+    res.clearCookie(Bun.env.COOKIE_NAME!)
+    res.status(StatusCodes.OK).json({
+      message: "user logged out",
+      status: SUCCESS,
+      data: ""
+    })
+  }
+)
