@@ -5,7 +5,6 @@ import {
   NotFound,
   Forbidden,
   UnAuthorized,
-  UnAuthenticated,
   NoContent,
 } from "../utils/errors";
 import { FAILED } from "../constants";
@@ -18,15 +17,14 @@ export const errorHandlerMiddleware = (
 ) => {
   if (err instanceof MongooseError && err.name === "CastError") {
     err = new BadRequest("Invalid id");
+    return;
   }
 
   if (
     err instanceof NotFound ||
     err instanceof BadRequest ||
     err instanceof Forbidden ||
-    err instanceof UnAuthenticated ||
     err instanceof NoContent ||
-    err instanceof UnAuthenticated ||
     err instanceof UnAuthorized
   ) {
     res.status(err.statusCode).json({
