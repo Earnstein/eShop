@@ -1,9 +1,9 @@
 import express from "express";
-import { signInHandler } from "../controllers/auth";
-import { validate, loginValidator } from '../middlewares/validators';
+import { signInHandler, signUpHandler } from '../controllers/auth';
+import { validate, signInValidator, signUpValidator } from '../middlewares/validators';
 
 const authRouter = express.Router();
-
-authRouter.post("/signin", validate(loginValidator), signInHandler);
+authRouter.post("/signup", validate(signUpValidator),signUpHandler)
+authRouter.post("/signin", validate(signInValidator), signInHandler);
 
 export default authRouter;
