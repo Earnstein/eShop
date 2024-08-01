@@ -9,13 +9,24 @@ interface I_SignIn {
 
 export const createToken = (user: I_UserDocument) => {
   const payload = {
-    _id: user._id as string
+    _id: user._id as string,
   };
   const token = jwt.sign(payload, Bun.env.JWT_SECRET!, {
     expiresIn: "7d",
   });
   return token;
 };
+
+export const signUpHandler =async (user: I_UserDocument) => {
+  const existingUser = await User.findOne({email: user.email});
+  if (existingUser){
+    throw new BadRequest("user with email already exists");
+  }
+  const newUser = await User.create({
+    ...user
+  })
+  return newUser;
+}
 
 export const signInHandler = async ({ email, password }: I_SignIn) => {
   const user = await User.findOne({ email: email });
