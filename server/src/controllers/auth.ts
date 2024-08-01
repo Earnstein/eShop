@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import asyncHandler from "express-async-handler";
 import { type I_UserDocument } from "../models/userModel";
-import * as userService from "../services/authService";
+import * as authService from "../services/authService";
 import { SUCCESS } from "../constants";
 
 
@@ -13,8 +13,12 @@ import { SUCCESS } from "../constants";
  */
 export const signUpHandler = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const body = req.body;
-    res.status(StatusCodes.OK).json(body);
+    const user:I_UserDocument = await authService.signUpHandler(req.body)
+    res.status(StatusCodes.OK).json({
+      message: "User created",
+      status: SUCCESS,
+      data: user
+    });
     return;
   },
 );
@@ -26,8 +30,8 @@ export const signUpHandler = asyncHandler(
  */
 export const signInHandler = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const user: I_UserDocument = await userService.signInHandler(req.body)
-    const token = userService.createToken(user);
+    const user: I_UserDocument = await authService.signInHandler(req.body)
+    const token = authService.createToken(user);
     res.cookie(Bun.env.COOKIE_NAME!, token, {
       domain: "localhost",
       path: "/",
