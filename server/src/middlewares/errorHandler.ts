@@ -8,6 +8,7 @@ import {
   NoContent,
 } from "../utils/errors";
 import { FAILED } from "../constants";
+import { StatusCodes } from "http-status-codes";
 
 export const errorHandlerMiddleware = (
   err: Error,
@@ -35,7 +36,7 @@ export const errorHandlerMiddleware = (
     return;
   }
 
-  res.status(400).json({
+  res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
     message: err.message,
     status: FAILED,
     data: "",
