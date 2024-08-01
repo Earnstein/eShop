@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import asyncHandler from "express-async-handler";
 import * as productService from "../services/productService";
+import { SUCCESS } from "../constants";
 
 
 
@@ -15,13 +16,17 @@ export const getProducts = asyncHandler(
     const products = await productService.getProducts();
     if (products.length === 0) {
       res.status(StatusCodes.OK).json({
-        data: 0,
         message: "There is no product in this inventory",
-        error: "",
+        status: SUCCESS,
+        data: "",
       });
       return;
     }
-    res.status(StatusCodes.OK).json(products);
+    res.status(StatusCodes.OK).json({
+      message: "products",
+      status: SUCCESS,
+      data: products,
+    });
     return;
   },
 );
@@ -37,7 +42,11 @@ export const getProduct = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     const product = await productService.getProduct(id);
-    res.status(StatusCodes.OK).json(product);
+    res.status(StatusCodes.OK).json({
+      message: "product found",
+      status: SUCCESS,
+      data: product,
+    });
     return;
   },
 );
