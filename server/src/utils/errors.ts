@@ -27,14 +27,6 @@ export class UnAuthorized extends Error {
   }
 }
 
-export class UnAuthenticated extends Error {
-  statusCode: number;
-  constructor(message: string) {
-    super(message);
-    this.name = "UnAuthenticated";
-    this.statusCode = StatusCodes.UNAUTHORIZED;
-  }
-}
 
 export class Forbidden extends Error {
   statusCode: number;
