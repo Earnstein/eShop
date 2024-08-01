@@ -5,7 +5,7 @@ import User, { type I_UserDocument } from "../models/userModel";
 import jwt from "jsonwebtoken";
 import * as mongoose from 'mongoose';
 
-interface CustomRequest extends Request {
+export interface CustomRequest extends Request {
   user?: I_UserDocument;
 }
 
