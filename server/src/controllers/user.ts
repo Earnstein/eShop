@@ -4,6 +4,7 @@ import asyncHandler from "express-async-handler";
 import * as userService from "../services/userService";
 import type { I_UserDocument } from "../models/userModel";
 import { SUCCESS } from "../constants";
+import type { CustomRequest } from '../middlewares/authMiddleware';
 
 export const getUsers = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
@@ -29,6 +30,19 @@ export const getUser = asyncHandler(
     return;
   }
 );
+
+export const getCurrentUser = asyncHandler(
+  async (req: CustomRequest, res: Response): Promise<void> => {
+  const userId = req.user?._id as string;
+  const user:I_UserDocument = await userService.getUserHandler(userId)
+  res.status(StatusCodes.OK).json({
+    message: "logged in user",
+    status: SUCCESS,
+    data: user,
+  });
+  return;
+ }
+)
 
 export const updateUser = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
