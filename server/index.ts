@@ -1,7 +1,7 @@
 import app from "./src/app";
 import "colorts/lib/string";
 import { mongoConnect, mongoDisconnect } from "./src/utils/mongo";
-const PORT = Bun.env.PORT || 8000;
+const PORT = Bun.env.PORT || 5000;
 
 try {
   await mongoDisconnect();
