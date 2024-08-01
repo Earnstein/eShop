@@ -40,7 +40,7 @@ export const paramValidator = [
   param("id").isMongoId().withMessage("Invalid ID"),
 ];
 
-export const loginValidator = [
+export const signInValidator = [
   body("email").isEmail().withMessage("Email is required"),
   body("password")
     .trim()
@@ -49,7 +49,7 @@ export const loginValidator = [
     .withMessage("Password is required"),
 ];
 
-export const registerValidator = [
+export const signUpValidator = [
   body("name").trim().notEmpty().withMessage("Name is required"),
-  ...loginValidator,
+  ...signInValidator,
 ];
