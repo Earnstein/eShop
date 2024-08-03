@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type Application } from "express";
 import morgan from "morgan";
 import appRouter from "./routers";
 import cors from "cors";
@@ -13,7 +13,7 @@ const limit = rateLimit({
   max: 4,
 });
 
-const app = express();
+const app: Application = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
