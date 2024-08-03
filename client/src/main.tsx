@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import "@/assets/custom/bootstrap.custom.css";
-import { HomePage, ProductPage, CartPage, ErrorPage } from "@/pages/index.ts";
+import { HomePage, ProductPage, CartPage, ErrorPage, LoginPage } from "@/pages/index.ts";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -22,6 +22,8 @@ const router = createBrowserRouter(
       <Route path="/" element={<HomePage />} index={true} />
       <Route path="/product/:id" element={<ProductPage />} />
       <Route path="/cart" element={<CartPage />} />
+      <Route path="/signin" element={<LoginPage />} />
+      <Route path="*" element={<ErrorPage />} />
     </Route>
   )
 );
