@@ -24,7 +24,7 @@ const Header = () => {
                   </Badge>
                 )}
               </Nav.Link>
-              <Nav.Link as={Link} to="/" className="nav-link">
+              <Nav.Link as={Link} to="/signin" className="nav-link">
                 <FaUser /> Sign In
               </Nav.Link>
             </Nav>
