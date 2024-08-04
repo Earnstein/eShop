@@ -23,12 +23,12 @@ const initialValuesLogin: FormValues = {
 };
 
 const RegisterPage = () => {
-  const handleFormSubmit = async (
+  const handleFormSubmit: (values: FormValues, { resetForm }: FormikHelpers<FormValues>) => Promise<void> = async (
     values: FormValues,
-    {resetForm}: FormikHelpers<FormValues>
+    { resetForm }: FormikHelpers<FormValues>
   ) => {
-    console.log(values);
     resetForm();
+    console.log(values);
   };
   return (
     <FormContainter>
@@ -50,7 +50,7 @@ const RegisterPage = () => {
           >
             <Form.Group controlId="password" className="mb-4 rounded-0">
               <Form.Label className="title fw-bold">
-                Password <span className="text-danger star text-center">*</span>
+                Username <span className="text-danger star text-center">*</span>
               </Form.Label>
               <Form.Control
                 type="text"
