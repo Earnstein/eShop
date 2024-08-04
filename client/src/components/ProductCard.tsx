@@ -14,7 +14,7 @@ export type ProductProp = {
   rating: number;
   numReviews: number;
 };
-const ProductCard = (product: ProductProp) => {
+const ProductCard: React.FC<ProductProp> = (product) => {
   return (
     <Card className="my-3 p-3 rounded">
       <Card.Link as={Link} to={`/product/${product._id}`}>
