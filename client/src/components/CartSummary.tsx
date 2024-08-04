@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 interface CartSummaryProps {
   totalItems: number;
   totalAmount: number;
-  onClearCart: () => void;
   isEmpty: boolean;
 }
 
