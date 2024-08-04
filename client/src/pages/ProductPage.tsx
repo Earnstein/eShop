@@ -6,6 +6,7 @@ import { Link, useParams } from "react-router-dom";
 import Loader from '@/components/Loader';
 import useCartStore, { CartItem } from '@/store/state';
 import { toast } from "sonner";
+import { FaArrowLeft } from "react-icons/fa";
 
 
 
@@ -30,9 +31,9 @@ const ProductPage = () => {
   return (
     <React.Fragment>
       <Link to="/">
-        <Button className="btn-block my-3" type="button">
-          Go Back
-        </Button>
+        <div className="my-3">
+          <FaArrowLeft size={20} />
+        </div>
       </Link>
       {isPending && <Loader/>}
       {isError && error?.message && <p>{error?.message} {error?.response?.status}</p>}
