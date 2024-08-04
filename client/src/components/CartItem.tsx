@@ -3,6 +3,8 @@ import React from "react";
 import { Col, Row, ListGroup, Image, Form, Button } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import useMediaQuery from "@/hooks/useMediaQuery";
+
 
 interface CartItemProps {
   item: CartItem;
@@ -11,6 +13,8 @@ interface CartItemProps {
 }
 
 const CartProduct: React.FC<CartItemProps> = ({ item, onRemove, onUpdate }) => {
+  const isTablet = useMediaQuery("(max-width: 768px)");
+  const marginClass = isTablet ? "my-1" : "my-0";
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     onUpdate(item, Number(e.target.value));
   };
@@ -37,6 +41,7 @@ const CartProduct: React.FC<CartItemProps> = ({ item, onRemove, onUpdate }) => {
             size="sm"
             value={item.qty}
             onChange={handleChange}
+            className={marginClass}
           >
             {[...Array(item.countInStock).keys()].map((x) => (
               <option key={x + 1} value={x + 1}>
@@ -49,6 +54,7 @@ const CartProduct: React.FC<CartItemProps> = ({ item, onRemove, onUpdate }) => {
           <Button
             variant="light"
             onClick={() => onRemove(item._id!)}
+            className={marginClass}
           >
             <FaTrash />
           </Button>
