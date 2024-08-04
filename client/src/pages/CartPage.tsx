@@ -8,15 +8,16 @@ import useCartStore, { CartItem } from "@/store/state";
 import CartProduct from "@/components/CartItem";
 import PaginationControls from "@/components/PaginationControls";
 import CartSummary from "@/components/CartSummary";
+import useMediaQuery from "@/hooks/useMediaQuery";
 
 const ITEMS_PER_PAGE = 3;
 
 const CartPage: React.FC = () => {
-  const { cartItems, removeFromCart, clearCartItems, addToCart } =
-    useCartStore();
-  const isEmpty = cartItems.length === 0;
-
   const [currentPage, setCurrentPage] = useState(1);
+  const { cartItems, removeFromCart, clearCartItems, addToCart } = useCartStore();
+
+  const isTablet = useMediaQuery("(max-width: 768px)");
+  const isEmpty = cartItems.length === 0;
 
   const totalPages = Math.ceil(cartItems.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -53,11 +54,9 @@ const CartPage: React.FC = () => {
   return (
     <Row className="mt-4">
       <Col md="8">
-        <div className="d-flex gap-3 align-items-center mb-2">
-          <Link to="/">
+      <Link to="/">
             <FaArrowLeft size={20} />
           </Link>
-        </div>
         {isEmpty ? (
           <Alert variant="info">
             Your Shopping Cart is Empty <Link to={"/"}>Go back</Link>
@@ -84,16 +83,18 @@ const CartPage: React.FC = () => {
                 onPageChange={handlePageChange}
               />
             )}
-            <Button
+
+            {!isTablet && (<Button
               type="button"
               className="btn-block"
+              size="sm"
               onClick={() => {
                 clearCartItems();
                 toast("Cart Cleared");
               }}
             >
               Clear Cart
-            </Button>
+            </Button>)}
           </>
         )}
       </Col>
