@@ -1,3 +1,4 @@
+import Bun from "bun";
 import express, { type Application } from "express";
 import morgan from "morgan";
 import appRouter from "./routers";
@@ -23,15 +24,15 @@ app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
-  }),
+  })
 );
 if (Bun.env.NODE_ENV === "production") {
   app.use(limit);
 }
-if (Bun.env.NODE_ENV === "development") {
+if (Bun.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
-app.use("/api/v1", appRouter);
+app.use("/v1", appRouter);
 app.use("*", (req, res) => {
   res.status(StatusCodes.NOT_FOUND).json({ message: "Not found" });
 });
