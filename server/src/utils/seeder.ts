@@ -3,8 +3,7 @@ import Product from "../models/productModel";
 import Order from "../models/orderModel";
 import User from "../models/userModel";
 
-
-export const importData = async () => {
+export const addData = async () => {
   try {
     await Order.deleteMany();
     await Product.deleteMany();
@@ -37,4 +36,3 @@ export const deleteData = async () => {
     process.exit(1);
   }
 };
-
