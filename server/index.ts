@@ -1,3 +1,4 @@
+import Bun from "bun";
 import app from "./src/app";
 import "colorts/lib/string";
 import { mongoConnect, mongoDisconnect } from "./src/utils/mongo";

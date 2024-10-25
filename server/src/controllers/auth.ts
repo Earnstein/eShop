@@ -1,10 +1,10 @@
+import Bun from "bun";
 import type { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import asyncHandler from "express-async-handler";
 import { type I_UserDocument } from "../models/userModel";
 import * as authService from "../services/authService";
 import { SUCCESS } from "../constants";
-
 
 /**
  * @desc    Auth user & sign up
@@ -13,14 +13,14 @@ import { SUCCESS } from "../constants";
  */
 export const signUpHandler = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const user:I_UserDocument = await authService.signUpHandler(req.body)
+    const user: I_UserDocument = await authService.signUpHandler(req.body);
     res.status(StatusCodes.OK).json({
       message: "User created",
       status: SUCCESS,
-      data: user
+      data: user,
     });
     return;
-  },
+  }
 );
 
 /**
@@ -30,8 +30,9 @@ export const signUpHandler = asyncHandler(
  */
 export const signInHandler = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const user: I_UserDocument = await authService.signInHandler(req.body)
+    const user: I_UserDocument = await authService.signInHandler(req.body);
     const token = authService.createToken(user);
+    console.log(user);
     res.cookie(Bun.env.COOKIE_NAME!, token, {
       domain: "localhost",
       path: "/",
@@ -39,17 +40,16 @@ export const signInHandler = asyncHandler(
       signed: true,
       secure: Bun.env.NODE_ENV! !== "development",
       sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    })
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
     res.status(StatusCodes.OK).json({
-        message: "user logged in",
-        status: SUCCESS,
-        data: ""
+      message: "user logged in",
+      status: SUCCESS,
+      data: "",
     });
     return;
-  },
+  }
 );
-
 
 /**
  * @desc    Auth user & sign out
@@ -57,12 +57,12 @@ export const signInHandler = asyncHandler(
  * @access  Public
  */
 export const signOutHandler = asyncHandler(
-  async (req:Request, res:Response): Promise<void> => {
-    res.clearCookie(Bun.env.COOKIE_NAME!)
+  async (req: Request, res: Response): Promise<void> => {
+    res.clearCookie(Bun.env.COOKIE_NAME!);
     res.status(StatusCodes.OK).json({
       message: "user logged out",
       status: SUCCESS,
-      data: ""
-    })
+      data: "",
+    });
   }
-)
+);
