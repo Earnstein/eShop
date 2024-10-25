@@ -2,15 +2,14 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
-export interface CartItem {
+export type CartItem = {
   _id: string;
   name: string;
   qty: number;
   price: number;
   image: string;
   countInStock: string;
-
-}
+};
 
 type ShippingAddress = {
   address: string;
@@ -62,22 +61,32 @@ const useCartStore = create<CartState & Actions>()(
           } else {
             state.cartItems.push(newItem);
           }
-          const itemsPrice = addDecimals(state.cartItems.reduce((total, item) => total + item.price * item.qty, 0));
-          const shippingPrice = addDecimals(itemsPrice >  1000 ? 0 : 10);
+          const itemsPrice = addDecimals(
+            state.cartItems.reduce(
+              (total, item) => total + item.price * item.qty,
+              0
+            )
+          );
+          const shippingPrice = addDecimals(itemsPrice > 1000 ? 0 : 10);
           const tax = addDecimals(Number((0.15 * itemsPrice).toFixed(2)));
-          state.totalPrice = Number(itemsPrice +  shippingPrice + tax);
+          state.totalPrice = Number(itemsPrice + shippingPrice + tax);
         }),
       removeFromCart: (id) =>
         set((state) => {
           state.cartItems = state.cartItems.filter((x) => x._id !== id);
-          const isCartEmpty = state.cartItems.length === 0
-          if (isCartEmpty){
-            state.totalPrice = 0
-          }else{
-          const itemsPrice = addDecimals(state.cartItems.reduce((total, item) => total + item.price * item.qty, 0));
-          const shippingPrice = addDecimals(itemsPrice >  1000 ? 0 : 10);
-          const tax = addDecimals(Number((0.15 * itemsPrice).toFixed(2)));
-          state.totalPrice = Number(itemsPrice +  shippingPrice + tax);
+          const isCartEmpty = state.cartItems.length === 0;
+          if (isCartEmpty) {
+            state.totalPrice = 0;
+          } else {
+            const itemsPrice = addDecimals(
+              state.cartItems.reduce(
+                (total, item) => total + item.price * item.qty,
+                0
+              )
+            );
+            const shippingPrice = addDecimals(itemsPrice > 1000 ? 0 : 10);
+            const tax = addDecimals(Number((0.15 * itemsPrice).toFixed(2)));
+            state.totalPrice = Number(itemsPrice + shippingPrice + tax);
           }
         }),
       saveShippingAddress: (address) =>
