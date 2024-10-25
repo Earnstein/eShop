@@ -1,9 +1,10 @@
+import Bun from "bun";
 import asyncHandler from "express-async-handler";
 import type { Response, Request, NextFunction } from "express";
 import { UnAuthorized, Forbidden } from "../utils/errors";
 import User, { type I_UserDocument } from "../models/userModel";
 import jwt from "jsonwebtoken";
-import * as mongoose from 'mongoose';
+import * as mongoose from "mongoose";
 
 export interface CustomRequest extends Request {
   user?: I_UserDocument;
