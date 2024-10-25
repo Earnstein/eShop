@@ -1,3 +1,4 @@
+import Bun from "bun";
 import { Schema, model, Document } from "mongoose";
 
 export interface I_UserDocument extends Document {
@@ -35,19 +36,18 @@ const UserSchema = new Schema<I_UserDocument>(
 
 UserSchema.pre("save", async function (next) {
   try {
-    if (this.isModified("password")){
+    if (this.isModified("password")) {
       const hashedPassword = await Bun.password.hash(this.password, {
         algorithm: "bcrypt",
-        cost: 10
+        cost: 10,
       });
       this.password = hashedPassword;
     }
     next();
   } catch (error: any) {
-    next(error)
+    next(error);
   }
-})
-
+});
 
 const User = model<I_UserDocument>("User", UserSchema);
 export default User;
