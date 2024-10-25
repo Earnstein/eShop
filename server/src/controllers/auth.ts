@@ -32,7 +32,6 @@ export const signInHandler = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const user: I_UserDocument = await authService.signInHandler(req.body);
     const token = authService.createToken(user);
-    console.log(user);
     res.cookie(Bun.env.COOKIE_NAME!, token, {
       domain: "localhost",
       path: "/",
@@ -45,7 +44,7 @@ export const signInHandler = asyncHandler(
     res.status(StatusCodes.OK).json({
       message: "user logged in",
       status: SUCCESS,
-      data: "",
+      data: { name: user.name },
     });
     return;
   }
