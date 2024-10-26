@@ -1,13 +1,10 @@
-import React from "react";
+import { PropsWithChildren } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 
-interface ChildrenProp {
-  children: React.ReactNode;
-}
-const FormContainter: React.FC<ChildrenProp> = ({ children }) => {
+const FormContainter: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <Container>
-      <Row className="justify-content-md-center mt-5">
+      <Row className="justify-content-md-center mt-md-4 mt-2">
         <Col xs={12} md={6}>
           {children}
         </Col>

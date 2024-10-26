@@ -4,23 +4,23 @@ import FormContainter from "@/components/FormContainter";
 import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
 import useCartStore from "@/store/state";
-import { useEffect } from "react";
+import FormGroup from "@/components/FormGroup";
 
-interface FormValues {
+interface ShippingFormValues {
   address: string;
   city: string;
   postalCode: string;
   country: string;
 }
 
-const addressSchema = yup.object().shape({
+const shippingSchema = yup.object().shape({
   address: yup.string().required("Address is required"),
   city: yup.string().required("City is required"),
   postalCode: yup.number().required("Postal code is required"),
   country: yup.string().required("Country is required"),
 });
 
-const initialValuesAddress: FormValues = {
+const initialShippingValues: ShippingFormValues = {
   address: "",
   city: "",
   postalCode: "",
@@ -29,103 +29,66 @@ const initialValuesAddress: FormValues = {
 
 const ShippingPage = () => {
   const navigate = useNavigate();
-  const { saveShippingAddress, shippingAddress, totalPrice } = useCartStore();
-  useEffect(() => {
-    console.log(shippingAddress);
-    console.log(totalPrice);
-  }, [shippingAddress]);
-  const handleFormSubmit: (
-    values: FormValues,
-    { resetForm }: FormikHelpers<FormValues>
-  ) => Promise<void> = async (
-    values: FormValues,
-    { resetForm }: FormikHelpers<FormValues>
+  const { saveShippingAddress } = useCartStore();
+
+  const handleSubmit = async (
+    values: ShippingFormValues,
+    { resetForm }: FormikHelpers<ShippingFormValues>
   ) => {
     saveShippingAddress(values);
     resetForm();
     navigate("/payment");
   };
+
   return (
     <FormContainter>
       <h3 className="text-md-center">Enter Your Shipping Details</h3>
       <Formik
-        onSubmit={handleFormSubmit}
-        initialValues={initialValuesAddress}
-        validationSchema={addressSchema}
+        onSubmit={handleSubmit}
+        initialValues={initialShippingValues}
+        validationSchema={shippingSchema}
       >
         {({ errors, touched, handleBlur, handleChange, handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="address" className="mb-4 rounded-0">
-              <Form.Label className="title fw-bold">
-                Address <span className="text-danger star text-center">*</span>
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="address"
-                placeholder="20 VI st"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                isInvalid={Boolean(touched.address && errors.address)}
-              />
+            <FormGroup
+              errors={errors.address}
+              touched={touched.address}
+              name="address"
+              type="text"
+              placeholder="20 VI st"
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+            />
 
-              <Form.Control.Feedback type="invalid">
-                {errors.address}
-              </Form.Control.Feedback>
-            </Form.Group>
+            <FormGroup
+              errors={errors.city}
+              touched={touched.city}
+              name="city"
+              type="text"
+              placeholder="Lagos"
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+            />
 
-            <Form.Group controlId="city" className="mb-4 rounded-0">
-              <Form.Label className="title fw-bold">
-                City <span className="text-danger star text-center">*</span>
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="city"
-                placeholder="Lagos"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                isInvalid={Boolean(touched.city && errors.city)}
-              />
+            <FormGroup
+              errors={errors.postalCode}
+              touched={touched.postalCode}
+              name="postalCode"
+              type="text"
+              placeholder="340221"
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+            />
 
-              <Form.Control.Feedback type="invalid">
-                {errors.city}
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group controlId="postalCode" className="mb-4 rounded-0">
-              <Form.Label className="title fw-bold">
-                Postal Code{" "}
-                <span className="text-danger star text-center">*</span>
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="postalCode"
-                placeholder="340221"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                isInvalid={Boolean(touched.postalCode && errors.postalCode)}
-              />
-
-              <Form.Control.Feedback type="invalid">
-                {errors.postalCode}
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group controlId="country" className="mb-4 rounded-0">
-              <Form.Label className="title fw-bold">
-                Country <span className="text-danger star text-center">*</span>
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="country"
-                placeholder="Nigeria"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                isInvalid={Boolean(touched.country && errors.country)}
-              />
-
-              <Form.Control.Feedback type="invalid">
-                {errors.country}
-              </Form.Control.Feedback>
-            </Form.Group>
+            <FormGroup
+              errors={errors.country}
+              touched={touched.country}
+              name="country"
+              type="text"
+              placeholder="Nigeria"
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+            />
 
             <Button variant="primary" type="submit">
               Submit

@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import { I_User, signUp } from "@/apis/api";
 import { toast } from "sonner";
+import FormGroup from "@/components/FormGroup";
 
 interface FormValues {
   name: string;
@@ -81,79 +82,47 @@ const RegisterPage = () => {
       >
         {({ errors, touched, handleBlur, handleChange, handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="password" className="mb-4 rounded-0">
-              <Form.Label className="title fw-bold">
-                Username <span className="text-danger star text-center">*</span>
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                placeholder="username"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                isInvalid={Boolean(touched.name && errors.name)}
-              />
+            <FormGroup
+              label="Username"
+              errors={errors.name}
+              touched={touched.name}
+              name="name"
+              type="text"
+              placeholder="Username"
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+            />
 
-              <Form.Control.Feedback type="invalid">
-                {errors.name}
-              </Form.Control.Feedback>
-            </Form.Group>
+            <FormGroup
+              errors={errors.email}
+              touched={touched.email}
+              name="email"
+              type="email"
+              placeholder="Email"
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+            />
 
-            <Form.Group controlId="email" className="mb-4 rounded-0">
-              <Form.Label className="title fw-bold">
-                Email <span className="text-danger star text-center">*</span>
-              </Form.Label>
-              <Form.Control
-                type="email"
-                name="email"
-                placeholder="Email"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                isInvalid={Boolean(touched.email && errors.email)}
-              />
+            <FormGroup
+              errors={errors.password}
+              touched={touched.password}
+              name="password"
+              type="password"
+              placeholder="Password"
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+            />
 
-              <Form.Control.Feedback type="invalid">
-                {errors.email}
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group controlId="password" className="mb-4 rounded-0">
-              <Form.Label className="title fw-bold">
-                Password <span className="text-danger star text-center">*</span>
-              </Form.Label>
-              <Form.Control
-                type="password"
-                name="password"
-                placeholder="Password"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                isInvalid={Boolean(touched.password && errors.password)}
-              />
-
-              <Form.Control.Feedback type="invalid">
-                {errors.password}
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group controlId="confirmPassword" className="mb-4 rounded-0">
-              <Form.Label className="title fw-bold">
-                Confirm Password{" "}
-                <span className="text-danger star text-center">*</span>
-              </Form.Label>
-              <Form.Control
-                type="password"
-                name="confirmPassword"
-                placeholder="confirm password"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                isInvalid={Boolean(
-                  touched.confirmPassword && errors.confirmPassword
-                )}
-              />
-
-              <Form.Control.Feedback type="invalid">
-                {errors.confirmPassword}
-              </Form.Control.Feedback>
-            </Form.Group>
+            <FormGroup
+              label="Confirm Password"
+              errors={errors.confirmPassword}
+              touched={touched.confirmPassword}
+              name="confirmPassword"
+              type="password"
+              placeholder="confirm password"
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+            />
 
             <Button variant="primary" type="submit" disabled={isPending}>
               Submit
