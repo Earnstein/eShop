@@ -11,7 +11,7 @@ interface CartSummaryProps {
 const CartSummary: React.FC<CartSummaryProps> = ({
   totalItems,
   totalAmount,
-  isEmpty
+  isEmpty,
 }) => {
   const navigate = useNavigate();
 
@@ -19,15 +19,14 @@ const CartSummary: React.FC<CartSummaryProps> = ({
     <Card>
       <ListGroup variant="flush">
         <ListGroup.Item>
-          <h2>Subtotal ({totalItems}) items</h2>
-          ${totalAmount.toFixed(2)}
+          <h2>Subtotal ({totalItems}) items</h2>${totalAmount.toFixed(2)}
         </ListGroup.Item>
         <ListGroup.Item>
           <Button
             type="button"
             className="btn-block"
             disabled={isEmpty}
-            onClick={() => navigate("/login?redirect=/shipping")}
+            onClick={() => navigate("/shipping")}
           >
             Proceed To Checkout
           </Button>
