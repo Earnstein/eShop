@@ -6,7 +6,7 @@ import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import { signIn } from "@/apis/api";
 import { toast } from "sonner";
-import useCartStore from "@/store/state";
+import useAuthStore from "@/store/userState";
 
 interface FormValues {
   email: string;
@@ -25,7 +25,7 @@ const initialValuesLogin: FormValues = {
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { addUser } = useCartStore();
+  const { setUser, clearUser } = useAuthStore();
   const { search } = useLocation();
   const sp = new URLSearchParams(search);
   const redirect = sp.get("redirect") || "/";
@@ -38,12 +38,13 @@ const LoginPage = () => {
       toast.loading("Signing in...");
     },
     onSuccess: (data) => {
-      addUser(data.data);
+      setUser(data.data);
       toast.dismiss();
       toast.success("Sign in successful");
       navigate(redirect);
     },
     onError: (error: any) => {
+      clearUser();
       toast.error(error?.response?.data?.message || error?.message);
       toast.dismiss();
     },
