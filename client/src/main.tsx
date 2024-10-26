@@ -11,6 +11,8 @@ import {
   LoginPage,
   RegisterPage,
   ShippingPage,
+  ProtectedRoute,
+  PaymentPage,
 } from "@/pages/index.ts";
 import {
   createBrowserRouter,
@@ -21,7 +23,6 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
-import ProtectedRoute from "./pages/ProtectedRoute.tsx";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const router = createBrowserRouter(
       <Route path="/signup" element={<RegisterPage />} />
       <Route path="" element={<ProtectedRoute />}>
         <Route path="/shipping" element={<ShippingPage />} />
+        <Route path="/payment" element={<PaymentPage />} />
       </Route>
     </Route>
   )

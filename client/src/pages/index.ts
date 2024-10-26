@@ -4,7 +4,9 @@ import CartPage from "@/pages/CartPage";
 import ErrorPage from "@/pages/ErrorPage";
 import LoginPage from "@/pages/LoginPage";
 import RegisterPage from "@/pages/RegisterPage";
-import ShippingPage from "./ShippingPage";
+import ShippingPage from "@/pages/ShippingPage";
+import PaymentPage from "@/pages/PaymentPage";
+import ProtectedRoute from "@/pages/ProtectedRoute";
 
 export {
   HomePage,
@@ -14,4 +16,6 @@ export {
   LoginPage,
   RegisterPage,
   ShippingPage,
+  PaymentPage,
+  ProtectedRoute,
 };
