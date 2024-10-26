@@ -39,3 +39,9 @@ export const signOut = async () => {
   const result = await response.data;
   return result;
 };
+
+export const currentUser = async () => {
+  const response = await axios.get("user/current/loggedin");
+  const result = await response.data;
+  return result;
+};
