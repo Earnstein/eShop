@@ -21,6 +21,7 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
+import ProtectedRoute from "./pages/ProtectedRoute.tsx";
 
 const queryClient = new QueryClient();
 
@@ -32,7 +33,9 @@ const router = createBrowserRouter(
       <Route path="/cart" element={<CartPage />} />
       <Route path="/signin" element={<LoginPage />} />
       <Route path="/signup" element={<RegisterPage />} />
-      <Route path="/shipping" element={<ShippingPage />} />
+      <Route path="" element={<ProtectedRoute />}>
+        <Route path="/shipping" element={<ShippingPage />} />
+      </Route>
     </Route>
   )
 );
