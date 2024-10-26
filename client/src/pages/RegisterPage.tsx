@@ -1,16 +1,17 @@
 import { Form, Button, Row, Col } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import FormContainter from "@/components/FormContainter";
 import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
-import { signUp } from "@/apis/api";
+import { I_User, signUp } from "@/apis/api";
 import { toast } from "sonner";
 
 interface FormValues {
   name: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
 const loginSchema = yup.object().shape({
@@ -24,19 +25,27 @@ const loginSchema = yup.object().shape({
     .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
     .matches(/\d/, "Password must contain at least one number")
     .required("Password is required"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password")], "Passwords must match")
+    .required("Confirm password is required"),
 });
 
 const initialValuesLogin: FormValues = {
   name: "",
   email: "",
   password: "",
+  confirmPassword: "",
 };
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const { search } = useLocation();
+  const sp = new URLSearchParams(search);
+  const redirect = sp.get("redirect") || "/";
   const { mutate, isPending, isSuccess } = useMutation({
     mutationKey: ["signup"],
-    mutationFn: (body: FormValues) => signUp(body),
+    mutationFn: (body: I_User) => signUp(body),
     onSuccess: () => {
       toast.dismiss();
       toast.success("Sign up successful");
@@ -45,8 +54,9 @@ const RegisterPage = () => {
     onMutate: () => {
       toast.loading("Signing up...");
     },
-    onError: (error) => {
-      toast.error(error?.message);
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || error?.message);
+      toast.dismiss();
     },
   });
 
@@ -57,7 +67,8 @@ const RegisterPage = () => {
     values: FormValues,
     { resetForm }: FormikHelpers<FormValues>
   ) => {
-    mutate(values);
+    const { confirmPassword, ...body } = values;
+    mutate(body);
     if (isSuccess) resetForm();
   };
   return (
@@ -123,6 +134,26 @@ const RegisterPage = () => {
                 {errors.password}
               </Form.Control.Feedback>
             </Form.Group>
+            <Form.Group controlId="confirmPassword" className="mb-4 rounded-0">
+              <Form.Label className="title fw-bold">
+                Confirm Password{" "}
+                <span className="text-danger star text-center">*</span>
+              </Form.Label>
+              <Form.Control
+                type="password"
+                name="confirmPassword"
+                placeholder="confirm password"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                isInvalid={Boolean(
+                  touched.confirmPassword && errors.confirmPassword
+                )}
+              />
+
+              <Form.Control.Feedback type="invalid">
+                {errors.confirmPassword}
+              </Form.Control.Feedback>
+            </Form.Group>
 
             <Button variant="primary" type="submit" disabled={isPending}>
               Submit
@@ -132,7 +163,10 @@ const RegisterPage = () => {
       </Formik>
       <Row className="py-3">
         <Col>
-          Already have an account? <Link to="/signin">Login</Link>
+          Already have an account?{" "}
+          <Link to={redirect ? `/signin?redirect=${redirect}` : "/signin"}>
+            Login
+          </Link>
         </Col>
       </Row>
     </FormContainter>
