@@ -5,9 +5,11 @@ import useCartStore from "@/store/state";
 import { useMutation } from "@tanstack/react-query";
 import { signOut } from "@/apis/api";
 import { toast } from "sonner";
+import useAuthStore from "@/store/userState";
 
 const Header = () => {
-  const { cartItems, user, clearUser } = useCartStore();
+  const { cartItems } = useCartStore();
+  const { user, clearUser } = useAuthStore();
   const { mutate } = useMutation({
     mutationKey: ["logout"],
     mutationFn: () => signOut(),
