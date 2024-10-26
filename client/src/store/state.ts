@@ -18,25 +18,19 @@ type ShippingAddress = {
   country: string;
 };
 
-type User = {
-  name: string;
-};
 type CartState = {
   cartItems: CartItem[];
   shippingAddress: ShippingAddress;
   paymentMethod: string;
   totalPrice: number;
-  user: User;
 };
 
 type Actions = {
   addToCart: (item: CartItem) => void;
-  addUser: (newUser: User) => void;
   removeFromCart: (id: string) => void;
   saveShippingAddress: (address: ShippingAddress) => void;
   savePaymentMethod: (method: string) => void;
   clearCartItems: () => void;
-  clearUser: () => void;
   resetCart: () => void;
 };
 
@@ -45,7 +39,6 @@ const initialState = {
   shippingAddress: {} as ShippingAddress,
   paymentMethod: "PayPal",
   totalPrice: 0 as number,
-  user: {} as User,
 };
 
 const addDecimals = (num: number) => {
@@ -57,10 +50,6 @@ const useCartStore = create<CartState & Actions>()(
     devtools(
       immer((set) => ({
         ...initialState,
-        addUser: (newUser) =>
-          set((state) => {
-            state.user = newUser;
-          }),
         addToCart: (newItem) =>
           set((state) => {
             const existingItem = state.cartItems.find(
@@ -115,7 +104,6 @@ const useCartStore = create<CartState & Actions>()(
             state.totalPrice = 0;
           }),
         resetCart: () => set(() => initialState),
-        clearUser: () => set((state) => ({ ...state, user: {} })),
       }))
     ),
     {
