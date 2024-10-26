@@ -1,4 +1,4 @@
-import { getProduct, getProducts } from "@/apis/api";
+import { currentUser, getProduct, getProducts } from "@/apis/api";
 import { STALETIME } from "@/constants";
 import { useQuery } from "@tanstack/react-query";
 import "@tanstack/react-query";
@@ -23,6 +23,14 @@ export const useGetProduct = (id: string) => {
   return useQuery({
     queryKey: ["product", id],
     queryFn: () => getProduct(id),
+    staleTime: STALETIME,
+  });
+};
+
+export const useGetCurrentUser = () => {
+  return useQuery({
+    queryKey: ["currentUser"],
+    queryFn: () => currentUser(),
     staleTime: STALETIME,
   });
 };
