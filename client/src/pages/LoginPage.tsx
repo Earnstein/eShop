@@ -43,8 +43,9 @@ const LoginPage = () => {
       toast.success("Sign in successful");
       navigate(redirect);
     },
-    onError: (error) => {
-      toast.error(error?.message);
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || error?.message);
+      toast.dismiss();
     },
   });
   const handleFormSubmit = async (
@@ -108,7 +109,10 @@ const LoginPage = () => {
       </Formik>
       <Row className="py-3">
         <Col>
-          Don't have an account? <Link to="/signup">Register</Link>
+          Don't have an account?{" "}
+          <Link to={redirect ? `/signup?redirect=${redirect}` : "/signup"}>
+            Register
+          </Link>
         </Col>
       </Row>
     </FormContainter>
