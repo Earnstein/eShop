@@ -36,6 +36,7 @@ type Actions = {
   saveShippingAddress: (address: ShippingAddress) => void;
   savePaymentMethod: (method: string) => void;
   clearCartItems: () => void;
+  clearUser: () => void;
   resetCart: () => void;
 };
 
@@ -114,6 +115,7 @@ const useCartStore = create<CartState & Actions>()(
             state.totalPrice = 0;
           }),
         resetCart: () => set(() => initialState),
+        clearUser: () => set((state) => ({ ...state, user: {} })),
       }))
     ),
     {
@@ -122,7 +124,10 @@ const useCartStore = create<CartState & Actions>()(
       partialize: (state) =>
         Object.fromEntries(
           Object.entries(state).filter(
-            ([key]) => key === "cartItems" || key === "totalPrice"
+            ([key]) =>
+              key === "cartItems" ||
+              key === "totalPrice" ||
+              key === "shippingAddress"
           )
         ),
     }
