@@ -1,10 +1,29 @@
-import { Nav, Navbar, Container, Badge } from "react-bootstrap";
+import { Nav, Navbar, Container, Badge, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import useCartStore from "@/store/state";
+import { useMutation } from "@tanstack/react-query";
+import { signOut } from "@/apis/api";
+import { toast } from "sonner";
 
 const Header = () => {
-  const { cartItems } = useCartStore();
+  const { cartItems, user, clearUser } = useCartStore();
+  const { mutate } = useMutation({
+    mutationKey: ["logout"],
+    mutationFn: () => signOut(),
+    onMutate: () => {
+      toast.info("Logging out");
+    },
+    onSuccess: () => {
+      toast.dismiss();
+      toast.success("Logged out successfully");
+      clearUser();
+    },
+    onError: (error: any) => {
+      toast.dismiss();
+      toast.error(error?.response?.data?.message || error.message);
+    },
+  });
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="md" collapseOnSelect>
@@ -24,9 +43,20 @@ const Header = () => {
                   </Badge>
                 )}
               </Nav.Link>
-              <Nav.Link as={Link} to="/signin" className="nav-link">
-                <FaUser /> Sign In
-              </Nav.Link>
+              {user.name ? (
+                <NavDropdown title={"Profile"} id="username">
+                  <Nav.Link as={Link} to="/profile" className="p-0">
+                    <NavDropdown.Item>{user.name}</NavDropdown.Item>
+                  </Nav.Link>
+                  <NavDropdown.Item onClick={() => mutate()}>
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
+              ) : (
+                <Nav.Link as={Link} to="/signin" className="nav-link">
+                  <FaUser /> Sign In
+                </Nav.Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
