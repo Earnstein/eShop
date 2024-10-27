@@ -1,10 +1,11 @@
-import { Form, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Form, Button, Row, Col } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import FormContainter from "@/components/FormContainter";
 import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
 import useCartStore from "@/store/state";
 import FormGroup from "@/components/FormGroup";
+import CheckOutSteps from "@/components/CheckOutSteps";
 
 interface ShippingFormValues {
   address: string;
@@ -29,7 +30,7 @@ const initialShippingValues: ShippingFormValues = {
 
 const ShippingPage = () => {
   const navigate = useNavigate();
-  const { saveShippingAddress } = useCartStore();
+  const { saveShippingAddress, shippingAddress } = useCartStore();
 
   const handleSubmit = async (
     values: ShippingFormValues,
@@ -42,6 +43,7 @@ const ShippingPage = () => {
 
   return (
     <FormContainter>
+      <CheckOutSteps step1 step2 />
       <h3 className="text-md-center">Enter Your Shipping Details</h3>
       <Formik
         onSubmit={handleSubmit}
@@ -96,6 +98,13 @@ const ShippingPage = () => {
           </Form>
         )}
       </Formik>
+      {shippingAddress.address && (
+        <Row className="py-3">
+          <Col>
+            Already added an address? <Link to="/payment">Go to Payment</Link>
+          </Col>
+        </Row>
+      )}
     </FormContainter>
   );
 };
