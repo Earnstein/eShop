@@ -26,6 +26,7 @@ const Header = () => {
       toast.error(error?.response?.data?.message || error.message);
     },
   });
+
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="md" collapseOnSelect>
