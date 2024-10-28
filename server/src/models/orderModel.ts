@@ -26,7 +26,7 @@ export interface I_OrderDocument extends Document {
   deliveredAt: Date;
 }
 
-interface I_CartDocument {
+export interface I_CartDocument {
   name: string;
   quantity: Number;
   image: string;
@@ -74,25 +74,24 @@ const OrderSchema = new Schema<I_OrderDocument>(
     },
     paymentMethod: { type: String, required: true },
     paymentResult: {
-      id: { type: String, required: true },
-      status: { type: String, required: true },
-      update_time: { type: String, required: true },
-      email_address: { type: String, required: true },
+      id: { type: String },
+      status: { type: String },
+      update_time: { type: String },
+      email_address: { type: String },
     },
     itemsPrice: { type: Number, required: true, default: 0.0 },
     taxPrice: { type: Number, required: true, default: 0.0 },
     shippingPrice: { type: Number, required: true, default: 0.0 },
     totalPrice: { type: Number, required: true, default: 0.0 },
-    isPaid: { type: Boolean, required: true },
-    isDelivered: { type: Boolean, required: true },
-    paidAt: { type: Date, required: true },
-    deliveredAt: { type: Date, required: true },
+    isPaid: { type: Boolean, required: true, default: false },
+    isDelivered: { type: Boolean, required: true, default: false },
+    paidAt: { type: Date },
+    deliveredAt: { type: Date },
   },
   {
     timestamps: true,
   }
 );
-
 
 const Order = model<I_OrderDocument>("Order", OrderSchema);
 export default Order;
