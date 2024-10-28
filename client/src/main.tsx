@@ -13,6 +13,7 @@ import {
   ShippingPage,
   ProtectedRoute,
   PaymentPage,
+  OrderPage,
 } from "@/pages/index.ts";
 import {
   createBrowserRouter,
@@ -37,6 +38,7 @@ const router = createBrowserRouter(
       <Route path="" element={<ProtectedRoute />}>
         <Route path="/shipping" element={<ShippingPage />} />
         <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/order" element={<OrderPage />} />
       </Route>
     </Route>
   )
