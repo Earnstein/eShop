@@ -7,6 +7,7 @@ import RegisterPage from "@/pages/RegisterPage";
 import ShippingPage from "@/pages/ShippingPage";
 import PaymentPage from "@/pages/PaymentPage";
 import ProtectedRoute from "@/pages/ProtectedRoute";
+import OrderPage from "@/pages/OrderPage";
 
 export {
   HomePage,
@@ -14,6 +15,7 @@ export {
   CartPage,
   ErrorPage,
   LoginPage,
+  OrderPage,
   RegisterPage,
   ShippingPage,
   PaymentPage,
