@@ -44,6 +44,17 @@ export const protectedRouteMiddleware = asyncHandler(
   }
 );
 
+/**
+ * Middleware to validate if the user has admin permissions.
+ * This function checks if the authenticated user is an admin.
+ * If not, a Forbidden error is thrown.
+ *
+ * @param req - Express request object, extended with a user property.
+ * @param res - Express response object.
+ * @param next - Express next function to pass control to the next middleware.
+ *
+ * @throws {Forbidden} If the user is not an admin.
+ */
 export const validateAdmin = (
   req: CustomRequest,
   res: Response,
@@ -59,6 +70,18 @@ export const validateAdmin = (
   next();
 };
 
+/**
+ * Middleware to validate if the user has permission to access the route.
+ * This function checks if the authenticated user is either an admin or
+ * the user corresponding to the ID in the request parameters. If neither
+ * condition is met, a Forbidden error is thrown.
+ *
+ * @param req - Express request object, extended with a user property.
+ * @param res - Express response object.
+ * @param next - Express next function to pass control to the next middleware.
+ *
+ * @throws {Forbidden} If the user is not the owner of the resource or an admin.
+ */
 export const validateUser = (
   req: CustomRequest,
   res: Response,
