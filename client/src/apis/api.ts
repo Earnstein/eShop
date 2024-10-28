@@ -1,8 +1,27 @@
 import { BASE_URL } from "@/constants";
+import { ShippingAddress } from "@/store/state";
 import axios from "axios";
 
 axios.defaults.baseURL = BASE_URL;
 axios.defaults.withCredentials = true;
+
+export interface I_Order {
+  name: string;
+  quantity: Number;
+  image: string;
+  price: Number;
+  product_id: string;
+}
+
+export interface I_OrderBody {
+  orderItems: Array<I_Order>;
+  shippingAddress: ShippingAddress;
+  paymentMethod: string;
+  itemsPrice: Number;
+  taxPrice: Number;
+  shippingPrice: Number;
+  totalPrice: Number;
+}
 
 export interface I_User {
   name: string;
@@ -42,6 +61,12 @@ export const signOut = async () => {
 
 export const currentUser = async () => {
   const response = await axios.get("user/current/loggedin");
+  const result = await response.data;
+  return result;
+};
+
+export const createOrder = async (body: I_OrderBody) => {
+  const response = await axios.post("order", body);
   const result = await response.data;
   return result;
 };
