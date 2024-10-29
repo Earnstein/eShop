@@ -31,7 +31,7 @@ export interface I_CartDocument {
   quantity: Number;
   image: string;
   price: Number;
-  product: ObjectId;
+  product_id: ObjectId;
 }
 
 const CartSchema = new Schema<I_CartDocument>({
@@ -51,7 +51,7 @@ const CartSchema = new Schema<I_CartDocument>({
     type: Number,
     required: true,
   },
-  product: {
+  product_id: {
     type: Schema.Types.ObjectId,
     required: true,
     ref: "Product",
