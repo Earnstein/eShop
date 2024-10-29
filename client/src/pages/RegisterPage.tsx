@@ -55,7 +55,7 @@ const RegisterPage = () => {
     onMutate: () => {
       toast.loading("Signing up...");
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(error?.response?.data?.message || error?.message);
       toast.dismiss();
     },
