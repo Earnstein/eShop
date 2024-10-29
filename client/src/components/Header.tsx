@@ -6,10 +6,13 @@ import { useMutation } from "@tanstack/react-query";
 import { signOut } from "@/apis/api";
 import { toast } from "sonner";
 import useAuthStore from "@/store/userState";
+import { useGetCurrentUser } from "@/apis/api-hooks";
+import { useEffect } from "react";
 
 const Header = () => {
   const { cartItems } = useCartStore();
   const { user, clearUser } = useAuthStore();
+  const { data: currentUser } = useGetCurrentUser();
   const { mutate } = useMutation({
     mutationKey: ["logout"],
     mutationFn: () => signOut(),
@@ -27,6 +30,12 @@ const Header = () => {
     },
   });
 
+  useEffect(() => {
+    if (!currentUser) {
+      toast.info("Session expired, please login again");
+      clearUser();
+    }
+  }, [currentUser, clearUser]);
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="md" collapseOnSelect>
