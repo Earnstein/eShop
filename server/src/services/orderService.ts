@@ -2,7 +2,14 @@ import type { I_OrderDocument } from "../models/orderModel";
 import Order from "../models/orderModel";
 import Product from "../models/productModel";
 import { BadRequest, NoContent } from "../utils/errors";
+import moment from "moment";
 
+export type paymentResult = {
+  id: string;
+  status: string;
+  update_time: string;
+  email_address: string;
+};
 type Body = Omit<
   I_OrderDocument,
   "_id" | "user" | "isPaid" | "isDelivered" | "paidAt" | "deliveredAt"
@@ -59,7 +66,7 @@ export const createOrder = async (userID: string, body: Body) => {
     totalPrice,
   });
   const createdOrder = await order.save();
-  return createdOrder;
+  return createdOrder._id;
 };
 
 export const getAllOrders = async () => {
@@ -86,12 +93,23 @@ export const getOrderById = async (orderID: string) => {
   return order;
 };
 
-export const updateOrderToPaid = async (orderID: string) => {
+export const updateOrderToPaid = async (
+  orderID: string,
+  paymentResult: paymentResult
+) => {
   const order = await Order.findById(orderID);
   if (!order) {
     throw new BadRequest("Order not found");
   }
+
   order.isPaid = true;
+  order.paidAt = moment().toDate() as any;
+  order.paymentResult = {
+    id: paymentResult.id,
+    status: paymentResult.status,
+    update_time: new Date(Date.now()).toISOString(),
+    email_address: paymentResult.email_address,
+  };
   await order.save();
   return order;
 };
