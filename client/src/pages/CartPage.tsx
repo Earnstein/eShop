@@ -1,4 +1,3 @@
-// CartPage.js
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, ListGroup, Alert, Button } from "react-bootstrap";
@@ -14,7 +13,8 @@ const ITEMS_PER_PAGE = 3;
 
 const CartPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { cartItems, removeFromCart, clearCartItems, addToCart } = useCartStore();
+  const { cartItems, removeFromCart, clearCartItems, addToCart } =
+    useCartStore();
 
   const isTablet = useMediaQuery("(max-width: 768px)");
   const isEmpty = cartItems.length === 0;
@@ -54,9 +54,11 @@ const CartPage: React.FC = () => {
   return (
     <Row className="mt-4">
       <Col md="8">
-      <Link to="/">
-            <FaArrowLeft size={20} />
-          </Link>
+        <FaArrowLeft
+          className="my-3"
+          size={20}
+          onClick={() => window.history.back()}
+        />
         {isEmpty ? (
           <Alert variant="info">
             Your Shopping Cart is Empty <Link to={"/"}>Go back</Link>
@@ -84,17 +86,19 @@ const CartPage: React.FC = () => {
               />
             )}
 
-            {!isTablet && (<Button
-              type="button"
-              className="btn-block"
-              size="sm"
-              onClick={() => {
-                clearCartItems();
-                toast("Cart Cleared");
-              }}
-            >
-              Clear Cart
-            </Button>)}
+            {!isTablet && (
+              <Button
+                type="button"
+                className="btn-block"
+                size="sm"
+                onClick={() => {
+                  clearCartItems();
+                  toast("Cart Cleared");
+                }}
+              >
+                Clear Cart
+              </Button>
+            )}
           </>
         )}
       </Col>
@@ -102,7 +106,10 @@ const CartPage: React.FC = () => {
       <Col md="4">
         <CartSummary
           totalItems={cartItems.reduce((acc, item) => acc + item.qty, 0)}
-          totalAmount={cartItems.reduce((acc, item) => acc + item.qty * item.price, 0)}
+          totalAmount={cartItems.reduce(
+            (acc, item) => acc + item.qty * item.price,
+            0
+          )}
           isEmpty={isEmpty}
         />
       </Col>
