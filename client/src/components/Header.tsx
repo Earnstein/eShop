@@ -24,7 +24,7 @@ const Header = () => {
       toast.success("Logged out successfully");
       clearUser();
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.dismiss();
       toast.error(error?.response?.data?.message || error.message);
     },
