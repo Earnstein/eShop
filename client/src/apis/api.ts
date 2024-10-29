@@ -1,5 +1,5 @@
 import { BASE_URL } from "@/constants";
-import { ShippingAddress } from "@/store/state";
+import { ShippingAddress } from "@/store/cartState";
 import axios from "axios";
 
 axios.defaults.baseURL = BASE_URL;
@@ -67,6 +67,12 @@ export const currentUser = async () => {
 
 export const createOrder = async (body: I_OrderBody) => {
   const response = await axios.post("order", body);
+  const result = await response.data;
+  return result;
+};
+
+export const getUserOrderById = async (id: string) => {
+  const response = await axios.get(`order/${id}`);
   const result = await response.data;
   return result;
 };
