@@ -44,7 +44,7 @@ const LoginPage = () => {
       toast.success("Sign in successful");
       navigate(redirect);
     },
-    onError: (error: any) => {
+    onError: (error) => {
       clearUser();
       toast.error(error?.response?.data?.message || error?.message);
       toast.dismiss();
