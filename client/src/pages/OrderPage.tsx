@@ -34,7 +34,11 @@ const OrderPage = () => {
   const { mutate, isError, isPending, error } = useMutation({
     mutationKey: ["createOrder"],
     mutationFn: (body: I_OrderBody) => createOrder(body),
-    onSuccess: () => clearCartItems(),
+    onSuccess: (data) => {
+      const orderId = data?.data;
+      navigate(`/order/${orderId}`);
+      clearCartItems();
+    },
     onError: (error) => {
       if (error?.response?.status === 401) {
         clearUser();
