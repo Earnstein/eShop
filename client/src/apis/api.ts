@@ -7,9 +7,9 @@ axios.defaults.withCredentials = true;
 
 export interface I_Order {
   name: string;
-  quantity: Number;
+  quantity: number;
   image: string;
-  price: Number;
+  price: number;
   product_id: string;
 }
 
@@ -17,10 +17,10 @@ export interface I_OrderBody {
   orderItems: Array<I_Order>;
   shippingAddress: ShippingAddress;
   paymentMethod: string;
-  itemsPrice: Number;
-  taxPrice: Number;
-  shippingPrice: Number;
-  totalPrice: Number;
+  itemsPrice: number;
+  taxPrice: number;
+  shippingPrice: number;
+  totalPrice: number;
 }
 
 export interface I_User {
