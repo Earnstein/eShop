@@ -11,7 +11,7 @@ export type CartItem = {
   countInStock: string;
 };
 
-type ShippingAddress = {
+export type ShippingAddress = {
   address: string;
   city: string;
   postalCode: string;
