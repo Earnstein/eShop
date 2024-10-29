@@ -8,6 +8,7 @@ import ShippingPage from "@/pages/ShippingPage";
 import PaymentPage from "@/pages/PaymentPage";
 import ProtectedRoute from "@/pages/ProtectedRoute";
 import OrderPage from "@/pages/OrderPage";
+import OrderSummaryPage from "@/pages/OrderSummaryPage";
 
 export {
   HomePage,
@@ -20,4 +21,5 @@ export {
   ShippingPage,
   PaymentPage,
   ProtectedRoute,
+  OrderSummaryPage,
 };
