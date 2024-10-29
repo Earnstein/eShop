@@ -14,6 +14,7 @@ import {
   ProtectedRoute,
   PaymentPage,
   OrderPage,
+  OrderSummaryPage,
 } from "@/pages/index.ts";
 import {
   createBrowserRouter,
@@ -39,6 +40,7 @@ const router = createBrowserRouter(
         <Route path="/shipping" element={<ShippingPage />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/placeorder" element={<OrderPage />} />
+        <Route path="/order/:order_id" element={<OrderSummaryPage />} />
       </Route>
     </Route>
   )
