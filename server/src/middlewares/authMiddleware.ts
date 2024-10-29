@@ -82,17 +82,15 @@ export const validateAdmin = (
  *
  * @throws {Forbidden} If the user is not the owner of the resource or an admin.
  */
-export const validateUser = (
-  req: CustomRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  const { id } = req.params;
-  const userId = req.user?._id as mongoose.ObjectId;
-  const isUser = new mongoose.Types.ObjectId(id).equals(userId.toString());
-  const isAdmin = req.user?.isAdmin;
-  if (!isAdmin && !isUser) {
-    throw new Forbidden("permission denied");
+export const validateUser = asyncHandler(
+  async (req: CustomRequest, res: Response, next: NextFunction) => {
+    const userId = req.user?._id?.toString();
+    const user = await User.findById({ _id: userId });
+    const isUser = userId === (user?._id?.toString() ?? "");
+    const isAdmin = req.user?.isAdmin;
+    if (!isAdmin && !isUser) {
+      throw new Forbidden("permission denied");
+    }
+    next();
   }
-  next();
-};
+);
