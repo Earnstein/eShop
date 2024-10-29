@@ -1,7 +1,7 @@
 import { createOrder, I_OrderBody } from "@/apis/api";
 import CheckOutSteps from "@/components/CheckOutSteps";
 import Loader from "@/components/Loader";
-import useCartStore from "@/store/state";
+import useCartStore from "@/store/cartState";
 import useAuthStore from "@/store/userState";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";

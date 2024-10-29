@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import FormContainter from "@/components/FormContainter";
 import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
-import useCartStore from "@/store/state";
+import useCartStore from "@/store/cartState";
 import FormGroup from "@/components/FormGroup";
 import CheckOutSteps from "@/components/CheckOutSteps";
 

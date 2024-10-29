@@ -1,7 +1,7 @@
 import { Nav, Navbar, Container, Badge, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
-import useCartStore from "@/store/state";
+import useCartStore from "@/store/cartState";
 import { useMutation } from "@tanstack/react-query";
 import { signOut } from "@/apis/api";
 import { toast } from "sonner";

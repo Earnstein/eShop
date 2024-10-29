@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Row, Col, ListGroup, Alert, Button } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa";
 import { toast } from "sonner";
-import useCartStore, { CartItem } from "@/store/state";
+import useCartStore, { CartItem } from "@/store/cartState";
 import CartProduct from "@/components/CartItem";
 import PaginationControls from "@/components/PaginationControls";
 import CartSummary from "@/components/CartSummary";

@@ -12,7 +12,7 @@ import {
 } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import Loader from "@/components/Loader";
-import useCartStore, { CartItem } from "@/store/state";
+import useCartStore, { CartItem } from "@/store/cartState";
 import { toast } from "sonner";
 import { FaArrowLeft } from "react-icons/fa";
 

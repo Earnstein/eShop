@@ -1,10 +1,9 @@
-import { CartItem } from "@/store/state";
+import { CartItem } from "@/store/cartState";
 import React from "react";
 import { Col, Row, ListGroup, Image, Form, Button } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import useMediaQuery from "@/hooks/useMediaQuery";
-
 
 interface CartItemProps {
   item: CartItem;
@@ -24,12 +23,7 @@ const CartProduct: React.FC<CartItemProps> = ({ item, onRemove, onUpdate }) => {
       <Row>
         <Col md={2}>
           <figure>
-            <Image
-              src={`/${item.image}`}
-              alt={item.name}
-              fluid
-              rounded
-            />
+            <Image src={`/${item.image}`} alt={item.name} fluid rounded />
           </figure>
         </Col>
         <Col md={3}>
