@@ -22,7 +22,7 @@ orderRouter.get(
   validateUser,
   getUserOrders
 );
-orderRouter.get("/:id", protectedRouteMiddleware, validateAdmin, getOrderById);
+orderRouter.get("/:id", protectedRouteMiddleware, validateUser, getOrderById);
 orderRouter.patch(
   "/:id",
   protectedRouteMiddleware,
