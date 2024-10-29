@@ -12,7 +12,6 @@ export const createToken = (user: I_UserDocument) => {
   const payload = {
     _id: user._id as string,
   };
-  console.log(Bun.env.JWT_SECRET!);
   const token = jwt.sign(payload, Bun.env.JWT_SECRET!, {
     expiresIn: "7d",
   });
