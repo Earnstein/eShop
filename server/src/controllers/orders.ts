@@ -19,12 +19,12 @@ export const createOrderHandler = asyncHandler(
       "_id" | "user" | "isPaid" | "isDelivered" | "paidAt" | "deliveredAt"
     > = req.body;
 
-    const savedOrder = await orderService.createOrder(userId, body);
+    const orderId = await orderService.createOrder(userId, body);
 
     res.status(StatusCodes.CREATED).json({
       message: "Order created successfully",
       status: SUCCESS,
-      data: savedOrder,
+      data: orderId,
     });
     return;
   }
@@ -93,7 +93,11 @@ export const getOrderById = asyncHandler(
 export const updateOrderToPaid = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const { id: orderID } = req.params;
-    const updatedOrder = await orderService.updateOrderToPaid(orderID);
+    const paymentResult: orderService.paymentResult = req.body;
+    const updatedOrder = await orderService.updateOrderToPaid(
+      orderID,
+      paymentResult
+    );
     res.status(StatusCodes.OK).json({
       message: "Order updated successfully",
       status: SUCCESS,
