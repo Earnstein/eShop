@@ -24,12 +24,17 @@ export const createOrder = async (userID: string, body: Body) => {
 
   const validatedOrderItems = await Promise.all(
     orderItems.map(async (item) => {
-      const product = await Product.findById(item.product);
+      const product = await Product.findById(item.product_id);
       if (!product) {
         throw new BadRequest("Product not found");
       }
       if (product.countInStock < Number(item.quantity)) {
         throw new BadRequest(`${product.name} is out of stock`);
+      }
+      if (product.price !== item.price) {
+        throw new BadRequest(
+          `${product.name} price has changed to ${product.price}`
+        );
       }
       product.countInStock -= Number(item.quantity);
       await product.save();
@@ -38,7 +43,7 @@ export const createOrder = async (userID: string, body: Body) => {
         quantity: item.quantity,
         image: item.image,
         price: item.price,
-        product: product._id,
+        product_id: product._id,
       };
     })
   );
