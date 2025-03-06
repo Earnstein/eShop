@@ -32,7 +32,7 @@ if (Bun.env.NODE_ENV === "production") {
 if (Bun.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
-app.use("/v1", appRouter);
+app.use("/api", appRouter);
 app.use("*", (req, res) => {
   res.status(StatusCodes.NOT_FOUND).json({ message: "Not found" });
 });
