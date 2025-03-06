@@ -1,10 +1,39 @@
-import { useGetOrderById } from "@/apis/api-hooks";
+import { useGetClientId, useGetOrderById } from "@/apis/api-hooks";
 import { useParams } from "react-router-dom";
 import { Card, Row, Col, ListGroup, Image } from "react-bootstrap";
+import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import { useMutation } from "@tanstack/react-query";
+import { payOrder } from "@/apis/api";
+import { toast } from "sonner";
+import useAuthStore from "@/store/userState";
+
+type PayOrderPayload = {
+  orderId: string;
+  details: any;
+};
 
 const OrderSummaryPage = () => {
   const { order_id } = useParams();
   const { data, isError, isPending } = useGetOrderById(order_id!);
+  const { user: LoggedInUser } = useAuthStore();
+
+  const [{ isPending: isPayPalScriptPending }, paypalDispatch] =
+    usePayPalScriptReducer();
+
+  const { mutate, isPending: isPayPending } = useMutation({
+    mutationKey: ["pay_order"],
+    mutationFn: ({ orderId, details }: PayOrderPayload) =>
+      payOrder(orderId, details),
+    onSuccess: (data) => {
+      toast.success("success");
+      console.log(data?.data);
+    },
+    onError: (error) => {
+      toast.error(error?.response?.data?.message);
+    },
+  });
+
+  const { data: payPalData, isLoading } = useGetClientId();
 
   if (isPending) return <div>Loading...</div>;
   if (isError) return <div>Error fetching order</div>;
