@@ -24,9 +24,9 @@ orderRouter.get(
 );
 orderRouter.get("/:id", protectedRouteMiddleware, validateUser, getOrderById);
 orderRouter.patch(
-  "/:id",
+  "/:id/pay",
   protectedRouteMiddleware,
-  validateAdmin,
+  // validateAdmin,
   updateOrderToPaid
 );
 export default orderRouter;
