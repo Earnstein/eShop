@@ -1,4 +1,4 @@
-import { BASE_URL } from "@/constants";
+import { BASE_URL, PAYPAL_URL } from "@/constants";
 import { ShippingAddress } from "@/store/cartState";
 import axios from "axios";
 
@@ -73,6 +73,18 @@ export const createOrder = async (body: I_OrderBody) => {
 
 export const getUserOrderById = async (id: string) => {
   const response = await axios.get(`order/${id}`);
+  const result = await response.data;
+  return result;
+};
+
+export const payOrder = async (orderId: string, details: any) => {
+  const response = await axios.patch(`order/${orderId}/pay`, details);
+  const result = await response.data;
+  return result;
+};
+
+export const getPayPalClientId = async () => {
+  const response = await axios.get(`${PAYPAL_URL}`);
   const result = await response.data;
   return result;
 };
