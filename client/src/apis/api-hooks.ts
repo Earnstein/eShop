@@ -1,5 +1,6 @@
 import {
   currentUser,
+  getPayPalClientId,
   getProduct,
   getProducts,
   getUserOrderById,
@@ -46,6 +47,14 @@ export const useGetOrderById = (id: string) => {
   return useQuery({
     queryKey: ["order", id],
     queryFn: () => getUserOrderById(id),
+    staleTime: STALETIME,
+  });
+};
+
+export const useGetClientId = () => {
+  return useQuery({
+    queryKey: ["client_id"],
+    queryFn: () => getPayPalClientId(),
     staleTime: STALETIME,
   });
 };
